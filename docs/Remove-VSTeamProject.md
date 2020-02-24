@@ -54,17 +54,21 @@ you do not have to pass the ProjectName with each call.
 
 ```yaml
 Type: String
-Required: true
 Position: 0
+Required: True
 Accept pipeline input: true (ByPropertyName)
 ```
 
 ### -Force
 
-Forces the command without confirmation
+Forces the function without confirmation
 
 ```yaml
 Type: SwitchParameter
+Required: false
+Position: Named
+Accept pipeline input: false
+Parameter Sets: (All)
 ```
 
 ## INPUTS
@@ -75,6 +79,7 @@ Type: SwitchParameter
 
 ## RELATED LINKS
 
-[Add-VSTeamAccount](Add-VSTeamAccount.md)
+[Set-VSTeamAccount](Set-VSTeamAccount.md)
 
 [Add-VSTeamProject](Add-VSTeamProject.md)
+

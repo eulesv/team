@@ -11,7 +11,7 @@ Adds a new SonarQube service endpoint.
 
 ## DESCRIPTION
 
-The cmdlet adds a new connection between TFS/VSTS and a SonarQube server using the SonarQube connection type.
+The cmdlet adds a new connection between TFS/AzD and a SonarQube server using the SonarQube connection type.
 
 This is only used when using the SonarQube tasks.
 
@@ -32,8 +32,8 @@ you do not have to pass the ProjectName with each call.
 
 ```yaml
 Type: String
-Required: true
 Position: 0
+Required: True
 Accept pipeline input: true (ByPropertyName)
 ```
 
@@ -63,7 +63,7 @@ Accept pipeline input: true (ByPropertyName)
 ### -EndpointName
 
 The name displayed on the services page.
-In VSTS this is the Connection Name.
+In AzD this is the Connection Name.
 
 ```yaml
 Type: String
@@ -76,7 +76,7 @@ A secured string to capture your personal access token.
 
 This will allow you to provide your personal access token without displaying it in plain text.
 
-To use pat simply omit it from the Add-VSTeamAccount command.
+To use pat simply omit it from the Set-VSTeamAccount command.
 
 ```yaml
 Type: SecureString
@@ -97,3 +97,4 @@ Required: True
 [Get-VSTeamServiceEndpointType](Get-VSTeamServiceEndpointType.md)
 
 [Remove-VSTeamServiceEndpoint](Remove-VSTeamServiceEndpoint.md)
+

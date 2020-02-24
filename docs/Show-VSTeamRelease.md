@@ -49,10 +49,11 @@ You can pipe the release ID to this function.
 
 ## RELATED LINKS
 
-[Add-VSTeamAccount](Add-VSTeamAccount.md)
+[Set-VSTeamAccount](Set-VSTeamAccount.md)
 
 [Set-VSTeamDefaultProject](Set-VSTeamDefaultProject.md)
 
 [Add-VSTeamRelease](Add-VSTeamRelease.md)
 
 [Remove-VSTeamRelease](Remove-VSTeamRelease.md)
+

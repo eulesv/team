@@ -36,8 +36,8 @@ you do not have to pass the ProjectName with each call.
 
 ```yaml
 Type: String
-Required: true
 Position: 0
+Required: True
 Accept pipeline input: true (ByPropertyName)
 ```
 
@@ -61,14 +61,15 @@ Accept pipeline input: true (ByPropertyName)
 
 ## NOTES
 
-You can pipe the release defintion ID to this function.
+You can pipe the release definition ID to this function.
 
 ## RELATED LINKS
 
-[Add-VSTeamAccount](Add-VSTeamAccount.md)
+[Set-VSTeamAccount](Set-VSTeamAccount.md)
 
 [Set-VSTeamDefaultProject](Set-VSTeamDefaultProject.md)
 
 [Add-VSTeamReleaseDefinition](Add-VSTeamReleaseDefinition.md)
 
 [Remove-VSTeamReleaseDefinition](Remove-VSTeamReleaseDefinition.md)
+

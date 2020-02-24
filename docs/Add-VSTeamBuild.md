@@ -13,7 +13,7 @@ Queues a new build.
 
 Add-VSTeamBuild will queue a new build.
 
-You can override the queue in the build defintion by using the QueueName parameter. You can override the default source branch by using the SourceBranch parameter. You can also set specific build parameters by using the BuildParameters parameter.
+You can override the queue in the build definition by using the QueueName parameter. You can override the default source branch by using the SourceBranch parameter. You can also set specific build parameters by using the BuildParameters parameter.
 
 To have the BuildDefinition and QueueNames tab complete you must set a default project by calling Set-VSTeamDefaultProject before you call Add-VSTeamBuild.
 
@@ -71,14 +71,14 @@ you do not have to pass the ProjectName with each call.
 
 ```yaml
 Type: String
-Required: true
 Position: 0
+Required: True
 Accept pipeline input: true (ByPropertyName)
 ```
 
 ### -BuildDefinitionName
 
-The name of the build defintion to use to queue to build.
+The name of the build definition to use to queue to build.
 
 ```yaml
 Type: String
@@ -98,7 +98,7 @@ Accept pipeline input: true (ByPropertyName)
 
 ### -BuildDefinitionId
 
-The Id of the build defintion to use to queue to build.
+The Id of the build definition to use to queue to build.
 
 ```yaml
 Type: Int32
@@ -154,3 +154,4 @@ BuildDefinition and QueueName are dynamic parameters and use the default project
 If you do not set the default project by called Set-VSTeamDefaultProject before calling Add-VSTeamBuild you will have to type in the names.
 
 ## RELATED LINKS
+

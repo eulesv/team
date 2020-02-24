@@ -1,10 +1,10 @@
 Set-StrictMode -Version Latest
 
-InModuleScope repositories {
+InModuleScope VSTeam {
 
    # Set the account to use for testing. A normal user would do this
-   # using the Add-VSTeamAccount function.
-   [VSTeamVersions]::Account = 'https://test.visualstudio.com'
+   # using the Set-VSTeamAccount function.
+   [VSTeamVersions]::Account = 'https://dev.azure.com/test'
 
    $results = [PSCustomObject]@{
       value = [PSCustomObject]@{
@@ -49,13 +49,13 @@ InModuleScope repositories {
    Describe "Git VSTS" {
       # Mock the call to Get-Projects by the dynamic parameter for ProjectName
       Mock Invoke-RestMethod { return @() } -ParameterFilter {
-         $Uri -like "*_apis/projects*" 
+         $Uri -like "*_apis/projects*"
       }
 
       . "$PSScriptRoot\mocks\mockProjectNameDynamicParam.ps1"
 
       Context 'Show-VSTeamGitRepository by project' {
-         Mock Show-Browser -Verifiable -ParameterFilter { $url -eq 'https://test.visualstudio.com/_git/project' }
+         Mock Show-Browser -Verifiable -ParameterFilter { $url -eq 'https://dev.azure.com/test/_git/project' }
          Mock Show-Browser { throw "Show-Browser called incorrectly: $Args" }
 
          Show-VSTeamGitRepository -projectName project
@@ -66,10 +66,10 @@ InModuleScope repositories {
       }
 
       Context 'Show-VSTeamGitRepository by remote url' {
-         Mock Show-Browser -Verifiable -ParameterFilter { $url -eq 'https://test.visualstudio.com/_git/project' }
+         Mock Show-Browser -Verifiable -ParameterFilter { $url -eq 'https://dev.azure.com/test/_git/project' }
          Mock Show-Browser { throw "Show-Browser called incorrectly: $Args" }
 
-         Show-VSTeamGitRepository -RemoteUrl 'https://test.visualstudio.com/_git/project'
+         Show-VSTeamGitRepository -RemoteUrl 'https://dev.azure.com/test/_git/project'
 
          it 'should return url for mine' {
             Assert-VerifiableMock
@@ -138,7 +138,7 @@ InModuleScope repositories {
          It 'Should remove Git repo' {
             Assert-MockCalled Invoke-RestMethod -ParameterFilter {
                $Method -eq 'Delete' -and
-               $Uri -eq "https://test.visualstudio.com/_apis/git/repositories/00000000-0000-0000-0000-000000000000?api-version=$([VSTeamVersions]::Git)"
+               $Uri -eq "https://dev.azure.com/test/_apis/git/repositories/00000000-0000-0000-0000-000000000000?api-version=$([VSTeamVersions]::Git)"
             }
          }
       }
@@ -155,9 +155,9 @@ InModuleScope repositories {
    Describe "Git TFS" {
       # Mock the call to Get-Projects by the dynamic parameter for ProjectName
       Mock Invoke-RestMethod { return @() } -ParameterFilter {
-         $Uri -like "*_apis/projects*" 
+         $Uri -like "*_apis/projects*"
       }
-      
+
       Mock _useWindowsAuthenticationOnPremise { return $true }
 
       [VSTeamVersions]::Account = 'http://localhost:8080/tfs/defaultcollection'

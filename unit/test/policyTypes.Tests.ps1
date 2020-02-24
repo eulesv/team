@@ -1,10 +1,10 @@
 Set-StrictMode -Version Latest
 
-InModuleScope policyTypes {
-   
+InModuleScope VSTeam {
+
    # Set the account to use for testing. A normal user would do this
-   # using the Add-VSTeamAccount function.
-   [VSTeamVersions]::Account = 'https://test.visualstudio.com'
+   # using the Set-VSTeamAccount function.
+   [VSTeamVersions]::Account = 'https://dev.azure.com/test'
 
    $results = [PSCustomObject]@{
       value = [PSCustomObject]@{ }
@@ -16,9 +16,9 @@ InModuleScope policyTypes {
 
       # Mock the call to Get-Projects by the dynamic parameter for ProjectName
       Mock Invoke-RestMethod { return @() } -ParameterFilter {
-         $Uri -like "*_apis/projects*" 
+         $Uri -like "*_apis/projects*"
       }
-      
+
       Context 'Get-VSTeamPolicyType by project' {
          Mock Invoke-RestMethod { return $results } -Verifiable
 
@@ -26,7 +26,7 @@ InModuleScope policyTypes {
 
          It 'Should return policies' {
             Assert-MockCalled Invoke-RestMethod -Exactly 1 -ParameterFilter {
-               $Uri -eq "https://test.visualstudio.com/Demo/_apis/policy/types/?api-version=$([VSTeamVersions]::Core)"
+               $Uri -eq "https://dev.azure.com/test/Demo/_apis/policy/types?api-version=$([VSTeamVersions]::Core)"
             }
          }
       }
@@ -46,7 +46,7 @@ InModuleScope policyTypes {
 
          It 'Should return policies' {
             Assert-MockCalled Invoke-RestMethod -Exactly 1 -ParameterFilter {
-               $Uri -eq "https://test.visualstudio.com/Demo/_apis/policy/types/90a51335-0c53-4a5f-b6ce-d9aff3ea60e0?api-version=$([VSTeamVersions]::Core)"
+               $Uri -eq "https://dev.azure.com/test/Demo/_apis/policy/types/90a51335-0c53-4a5f-b6ce-d9aff3ea60e0?api-version=$([VSTeamVersions]::Core)"
             }
          }
       }

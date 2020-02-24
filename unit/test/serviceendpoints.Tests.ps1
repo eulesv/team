@@ -1,17 +1,17 @@
 Set-StrictMode -Version Latest
 
-InModuleScope serviceendpoints {
-   [VSTeamVersions]::Account = 'https://test.visualstudio.com'
+InModuleScope VSTeam {
+   [VSTeamVersions]::Account = 'https://dev.azure.com/test'
 
    Describe 'ServiceEndpoints TFS2017 throws' {
       # Mock the call to Get-Projects by the dynamic parameter for ProjectName
       Mock Invoke-RestMethod { return @() } -ParameterFilter {
-         $Uri -like "*_apis/projects*" 
+         $Uri -like "*_apis/projects*"
       }
-      
-      Context 'Add-VSTeamServiceFabricEndpoint' {  
+
+      Context 'Add-VSTeamServiceFabricEndpoint' {
          Mock ConvertTo-Json { throw 'Should not be called' } -Verifiable
-         
+
          It 'Should throw' {
             Set-VSTeamAPIVersion TFS2017
 
@@ -19,9 +19,9 @@ InModuleScope serviceendpoints {
                   -endpointName 'PM_DonovanBrown' -url "tcp://0.0.0.0:19000" `
                   -useWindowsSecurity $false } | Should Throw
          }
-         
+
          It 'ConvertTo-Json should not be called' {
-            Assert-MockCalled ConvertTo-Json -Exactly 0 
+            Assert-MockCalled ConvertTo-Json -Exactly 0
          }
       }
    }
@@ -29,9 +29,9 @@ InModuleScope serviceendpoints {
    Describe 'ServiceEndpoints TFS' {
       # Mock the call to Get-Projects by the dynamic parameter for ProjectName
       Mock Invoke-RestMethod { return @() } -ParameterFilter {
-         $Uri -like "*_apis/projects*" 
+         $Uri -like "*_apis/projects*"
       }
-   
+
       . "$PSScriptRoot\mocks\mockProjectNameDynamicParamNoPSet.ps1"
 
       Context 'Get-VSTeamServiceEndpoint' {
@@ -53,7 +53,7 @@ InModuleScope serviceendpoints {
             Get-VSTeamServiceEndpoint -projectName project -Verbose
 
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
-               $Uri -eq "https://test.visualstudio.com/project/_apis/distributedtask/serviceendpoints/?api-version=$([VSTeamVersions]::DistributedTask)"
+               $Uri -eq "https://dev.azure.com/test/project/_apis/distributedtask/serviceendpoints?api-version=$([VSTeamVersions]::DistributedTask)"
             }
          }
       }
@@ -65,7 +65,7 @@ InModuleScope serviceendpoints {
             Remove-VSTeamServiceEndpoint -projectName project -id 5 -Force
 
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
-               $Uri -eq "https://test.visualstudio.com/project/_apis/distributedtask/serviceendpoints/5?api-version=$([VSTeamVersions]::DistributedTask)" -and
+               $Uri -eq "https://dev.azure.com/test/project/_apis/distributedtask/serviceendpoints/5?api-version=$([VSTeamVersions]::DistributedTask)" -and
                $Method -eq 'Delete'
             }
          }
@@ -78,7 +78,7 @@ InModuleScope serviceendpoints {
 
             # This $i is in the module. Because we use InModuleScope
             # we can see it
-            if ($i -gt 9) {
+            if ($iTracking -gt 9) {
                return [PSCustomObject]@{
                   isReady         = $true
                   operationStatus = [PSCustomObject]@{state = 'Ready'}
@@ -108,7 +108,7 @@ InModuleScope serviceendpoints {
 
             # This $i is in the module. Because we use InModuleScope
             # we can see it
-            if ($i -gt 9) {
+            if ($iTracking -gt 9) {
                return [PSCustomObject]@{
                   isReady         = $true
                   operationStatus = [PSCustomObject]@{state = 'Ready'}
@@ -132,6 +132,7 @@ InModuleScope serviceendpoints {
       }
 
       Context 'Add-VSTeamSonarQubeEndpoint throws on TFS' {
+         Mock Write-Warning
          Mock Write-Error -Verifiable
          Mock Invoke-RestMethod {
             $e = [System.Management.Automation.ErrorRecord]::new(
@@ -139,7 +140,7 @@ InModuleScope serviceendpoints {
                "Endpoint type couldn't be recognized 'sonarqube'",
                [System.Management.Automation.ErrorCategory]::ProtocolError,
                $null)
-         
+
             # The error message is different on TFS and VSTS
             $msg = ConvertTo-Json @{
                '$id'   = 1
@@ -150,7 +151,7 @@ InModuleScope serviceendpoints {
 
             $PSCmdlet.ThrowTerminatingError($e)
          }
-         
+
          It 'should create a new SonarQube Serviceendpoint' {
             Add-VSTeamSonarQubeEndpoint -projectName 'project' -endpointName 'PM_DonovanBrown' `
                -sonarqubeUrl 'http://mysonarserver.local' `
@@ -167,7 +168,7 @@ InModuleScope serviceendpoints {
 
             # This $i is in the module. Because we use InModuleScope
             # we can see it
-            if ($i -gt 9) {
+            if ($iTracking -gt 9) {
                return [PSCustomObject]@{
                   isReady         = $true
                   operationStatus = [PSCustomObject]@{state = 'Ready'}
@@ -199,7 +200,7 @@ InModuleScope serviceendpoints {
 
             # This $i is in the module. Because we use InModuleScope
             # we can see it
-            if ($i -gt 9) {
+            if ($iTracking -gt 9) {
                return [PSCustomObject]@{
                   isReady         = $false
                   operationStatus = [PSCustomObject]@{
@@ -242,7 +243,7 @@ InModuleScope serviceendpoints {
 
             # This $i is in the module. Because we use InModuleScope
             # we can see it
-            if ($i -gt 9) {
+            if ($iTracking -gt 9) {
                return [PSCustomObject]@{
                   isReady         = $true
                   operationStatus = [PSCustomObject]@{state = 'Ready'}
@@ -266,6 +267,7 @@ InModuleScope serviceendpoints {
       }
 
       Context 'Add-VSTeamSonarQubeEndpoint throws on VSTS' {
+         Mock Write-Warning
          Mock Write-Error -Verifiable
          Mock Invoke-RestMethod {
             $e = [System.Management.Automation.ErrorRecord]::new(
@@ -273,7 +275,7 @@ InModuleScope serviceendpoints {
                "Endpoint type couldn't be recognized 'sonarqube'",
                [System.Management.Automation.ErrorCategory]::ProtocolError,
                $null)
-            
+
             # The error message is different on TFS and VSTS
             $msg = ConvertTo-Json @{
                '$id'   = 1
@@ -284,7 +286,7 @@ InModuleScope serviceendpoints {
 
             $PSCmdlet.ThrowTerminatingError($e)
          }
-         
+
          It 'should create a new SonarQube Serviceendpoint' {
             Add-VSTeamSonarQubeEndpoint -projectName 'project' -endpointName 'PM_DonovanBrown' -sonarqubeUrl 'http://mysonarserver.local' -personalAccessToken '00000000-0000-0000-0000-000000000000'
 
@@ -299,7 +301,7 @@ InModuleScope serviceendpoints {
 
             # This $i is in the module. Because we use InModuleScope
             # we can see it
-            if ($i -gt 9) {
+            if ($iTracking -gt 9) {
                return [PSCustomObject]@{
                   isReady         = $true
                   operationStatus = [PSCustomObject]@{state = 'Ready'}
@@ -332,7 +334,7 @@ InModuleScope serviceendpoints {
 
             # This $i is in the module. Because we use InModuleScope
             # we can see it
-            if ($i -gt 9) {
+            if ($iTracking -gt 9) {
                return [PSCustomObject]@{
                   isReady         = $true
                   operationStatus = [PSCustomObject]@{state = 'Ready'}
@@ -368,7 +370,7 @@ InModuleScope serviceendpoints {
 
             # This $i is in the module. Because we use InModuleScope
             # we can see it
-            if ($i -gt 9) {
+            if ($iTracking -gt 9) {
                return [PSCustomObject]@{
                   isReady         = $true
                   operationStatus = [PSCustomObject]@{state = 'Ready'}
@@ -389,7 +391,7 @@ InModuleScope serviceendpoints {
                -kubernetesUrl 'http://myK8s.local' -clientKeyData '00000000-0000-0000-0000-000000000000' `
                -kubeconfig '{name: "myConfig"}' -clientCertificateData 'someClientCertData'
 
-            # On PowerShell 5 the JSON has two spaces but on PowerShell 6 it only has one so 
+            # On PowerShell 5 the JSON has two spaces but on PowerShell 6 it only has one so
             # test for both.
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
                $Method -eq 'Post' -and
@@ -408,7 +410,7 @@ InModuleScope serviceendpoints {
 
             # This $i is in the module. Because we use InModuleScope
             # we can see it
-            if ($i -gt 9) {
+            if ($iTracking -gt 9) {
                return [PSCustomObject]@{
                   isReady         = $true
                   operationStatus = [PSCustomObject]@{state = 'Ready'}
@@ -429,7 +431,7 @@ InModuleScope serviceendpoints {
                -kubernetesUrl 'http://myK8s.local' -clientKeyData '00000000-0000-0000-0000-000000000000' `
                -kubeconfig '{name: "myConfig"}' -clientCertificateData 'someClientCertData' -acceptUntrustedCerts -generatePfx
 
-            # On PowerShell 5 the JSON has two spaces but on PowerShell 6 it only has one so 
+            # On PowerShell 5 the JSON has two spaces but on PowerShell 6 it only has one so
             # test for both.
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
                $Method -eq 'Post' -and
@@ -448,7 +450,7 @@ InModuleScope serviceendpoints {
 
             # This $i is in the module. Because we use InModuleScope
             # we can see it
-            if ($i -gt 9) {
+            if ($iTracking -gt 9) {
                return [PSCustomObject]@{
                   isReady         = $true
                   operationStatus = [PSCustomObject]@{state = 'Ready'}
@@ -463,12 +465,12 @@ InModuleScope serviceendpoints {
                operationStatus = [PSCustomObject]@{state = 'InProgress'}
             }
          }
-         
+
          Add-VSTeamNuGetEndpoint -ProjectName 'project' -EndpointName 'PowerShell Gallery' -NuGetUrl 'https://www.powershellgallery.com/api/v2/package' -ApiKey '00000000-0000-0000-0000-000000000000'
-         
+
          It 'should create a new NuGet Serviceendpoint' {
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope Context -Times 1 -ParameterFilter {
-               $Uri -eq "https://test.visualstudio.com/project/_apis/distributedtask/serviceendpoints/?api-version=$([VSTeamVersions]::DistributedTask)" -and
+               $Uri -eq "https://dev.azure.com/test/project/_apis/distributedtask/serviceendpoints?api-version=$([VSTeamVersions]::DistributedTask)" -and
                $Method -eq 'Post' -and
                $ContentType -eq 'application/json' -and
                $Body -like '*"nugetkey": *"00000000-0000-0000-0000-000000000000"*' -and
@@ -486,7 +488,7 @@ InModuleScope serviceendpoints {
 
             # This $i is in the module. Because we use InModuleScope
             # we can see it
-            if ($i -gt 9) {
+            if ($iTracking -gt 9) {
                return [PSCustomObject]@{
                   isReady         = $true
                   operationStatus = [PSCustomObject]@{state = 'Ready'}
@@ -501,13 +503,13 @@ InModuleScope serviceendpoints {
                operationStatus = [PSCustomObject]@{state = 'InProgress'}
             }
          }
-         
+
          $password = '00000000-0000-0000-0000-000000000000' | ConvertTo-SecureString -AsPlainText -Force
          Add-VSTeamNuGetEndpoint -ProjectName 'project' -EndpointName 'PowerShell Gallery' -NuGetUrl 'https://www.powershellgallery.com/api/v2/package' -Username 'testUser' -SecurePassword $password
-        
+
          It 'should create a new NuGet Serviceendpoint' {
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope Context -Times 1 -ParameterFilter {
-               $Uri -eq "https://test.visualstudio.com/project/_apis/distributedtask/serviceendpoints/?api-version=$([VSTeamVersions]::DistributedTask)" -and
+               $Uri -eq "https://dev.azure.com/test/project/_apis/distributedtask/serviceendpoints?api-version=$([VSTeamVersions]::DistributedTask)" -and
                $Method -eq 'Post' -and
                $ContentType -eq 'application/json' -and
                $Body -like '*"username": *"testUser"*' -and
@@ -519,16 +521,16 @@ InModuleScope serviceendpoints {
 
       Context 'Add-VSTeamNuGetEndpoint with Token' {
          Mock Write-Progress
-         
+
          Mock Invoke-RestMethod {
             # Write-Host "$args"
             return @{id = '23233-2342'}
          } -ParameterFilter { $Method -eq 'Post'}
-         
+
          Mock Invoke-RestMethod {
             # This $i is in the module. Because we use InModuleScope
             # we can see it
-            if ($i -gt 9) {
+            if ($iTracking -gt 9) {
                return [PSCustomObject]@{
                   isReady         = $true
                   operationStatus = [PSCustomObject]@{state = 'Ready'}
@@ -543,12 +545,12 @@ InModuleScope serviceendpoints {
                operationStatus = [PSCustomObject]@{state = 'InProgress'}
             }
          }
-         
+
          Add-VSTeamNuGetEndpoint -ProjectName 'project' -EndpointName 'PowerShell Gallery' -NuGetUrl 'https://www.powershellgallery.com/api/v2/package' -PersonalAccessToken '00000000-0000-0000-0000-000000000000'
-         
+
          It 'should create a new NuGet Serviceendpoint' {
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope Context -Times 1 -ParameterFilter {
-               $Uri -eq "https://test.visualstudio.com/project/_apis/distributedtask/serviceendpoints/?api-version=$([VSTeamVersions]::DistributedTask)" -and
+               $Uri -eq "https://dev.azure.com/test/project/_apis/distributedtask/serviceendpoints?api-version=$([VSTeamVersions]::DistributedTask)" -and
                $Method -eq 'Post' -and
                $ContentType -eq 'application/json' -and
                $Body -like '*"apitoken":*"00000000-0000-0000-0000-000000000000"*' -and
@@ -556,7 +558,7 @@ InModuleScope serviceendpoints {
             }
          }
       }
-   
+
       Context 'Update-VSTeamServiceEndpoint' {
          Mock Write-Progress
          Mock Invoke-RestMethod { return @{id = '23233-2342'} } -ParameterFilter { $Method -eq 'Get'}
@@ -565,7 +567,7 @@ InModuleScope serviceendpoints {
 
             # This $i is in the module. Because we use InModuleScope
             # we can see it
-            if ($i -gt 9) {
+            if ($iTracking -gt 9) {
                return [PSCustomObject]@{
                   isReady         = $true
                   operationStatus = [PSCustomObject]@{state = 'Ready'}
@@ -586,7 +588,7 @@ InModuleScope serviceendpoints {
                -object @{ key = 'value' }
 
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
-               $Method -eq 'Put' 
+               $Method -eq 'Put'
             }
          }
       }

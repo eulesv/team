@@ -1,7 +1,7 @@
 Set-StrictMode -Version Latest
 
-InModuleScope tfvc {
-   
+InModuleScope VSTeam {
+
    $singleResult = [PSCustomObject]@{
       path        = "$/MyProject/Master";
       description = 'desc';
@@ -26,10 +26,10 @@ InModuleScope tfvc {
    Describe 'Get-VSTeamTfvcRootBranch VSTS' -Tag 'unit', 'tfvc', 'vsts' {
       # Mock the call to Get-Projects by the dynamic parameter for ProjectName
       Mock Invoke-RestMethod { return @() } -ParameterFilter {
-         $Uri -like "*_apis/projects*" 
+         $Uri -like "*_apis/projects*"
       }
 
-      [VSTeamVersions]::Account = 'https://test.visualstudio.com'
+      [VSTeamVersions]::Account = 'https://dev.azure.com/test'
 
       Context 'Get-VSTeamTfvcRootBranch with no parameters and single result' {
          Mock Invoke-RestMethod { return $singleResult } -Verifiable
@@ -42,7 +42,7 @@ InModuleScope tfvc {
 
          It 'should call the REST endpoint with correct parameters' {
             Assert-MockCalled Invoke-RestMethod -Scope Context -Exactly -Times 1 -ParameterFilter {
-               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches/?api-version=$([VSTeamVersions]::Tfvc)"
+               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches?api-version=$([VSTeamVersions]::Tfvc)"
             }
          }
       }
@@ -60,7 +60,7 @@ InModuleScope tfvc {
 
          It 'should call the REST endpoint with correct parameters' {
             Assert-MockCalled Invoke-RestMethod -Scope Context -Exactly -Times 1 -ParameterFilter {
-               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches/?api-version=$([VSTeamVersions]::Tfvc)"
+               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches?api-version=$([VSTeamVersions]::Tfvc)"
             }
          }
       }
@@ -72,7 +72,7 @@ InModuleScope tfvc {
 
          It 'should call the REST endpoint with correct parameters' {
             Assert-MockCalled Invoke-RestMethod -Scope Context -Exactly -Times 1 -ParameterFilter {
-               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches/?api-version=$([VSTeamVersions]::Tfvc)&includeChildren=True"
+               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches?api-version=$([VSTeamVersions]::Tfvc)&includeChildren=True"
             }
          }
       }
@@ -84,7 +84,7 @@ InModuleScope tfvc {
 
          It 'should call the REST endpoint with correct parameters' {
             Assert-MockCalled Invoke-RestMethod -Scope Context -Exactly -Times 1 -ParameterFilter {
-               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches/?api-version=$([VSTeamVersions]::Tfvc)&includeDeleted=True"
+               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches?api-version=$([VSTeamVersions]::Tfvc)&includeDeleted=True"
             }
          }
       }
@@ -96,7 +96,7 @@ InModuleScope tfvc {
 
          It 'should call the REST endpoint with correct parameters' {
             Assert-MockCalled Invoke-RestMethod -Scope Context -Exactly -Times 1 -ParameterFilter {
-               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches/?api-version=$([VSTeamVersions]::Tfvc)&includeChildren=True&includeDeleted=True"
+               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches?api-version=$([VSTeamVersions]::Tfvc)&includeChildren=True&includeDeleted=True"
             }
          }
       }
@@ -105,12 +105,12 @@ InModuleScope tfvc {
    Describe 'Get-VSTeamTfvcRootBranch TFS' -Tag 'unit', 'tfvc', 'tfs' {
       # Mock the call to Get-Projects by the dynamic parameter for ProjectName
       Mock Invoke-RestMethod { return @() } -ParameterFilter {
-         $Uri -like "*_apis/projects*" 
+         $Uri -like "*_apis/projects*"
       }
 
       [VSTeamVersions]::Account = 'http://localhost:8080/tfs/defaultcollection'
       Mock _useWindowsAuthenticationOnPremise { return $true }
-      
+
       Context 'Get-VSTeamTfvcRootBranch with no parameters and single result' {
          Mock Invoke-RestMethod { return $singleResult } -Verifiable
 
@@ -122,7 +122,7 @@ InModuleScope tfvc {
 
          It 'should call the REST endpoint with correct parameters' {
             Assert-MockCalled Invoke-RestMethod -Scope Context -Exactly -Times 1 -ParameterFilter {
-               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches/?api-version=$([VSTeamVersions]::Tfvc)"
+               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches?api-version=$([VSTeamVersions]::Tfvc)"
             }
          }
       }
@@ -140,7 +140,7 @@ InModuleScope tfvc {
 
          It 'should call the REST endpoint with correct parameters' {
             Assert-MockCalled Invoke-RestMethod -Scope Context -Exactly -Times 1 -ParameterFilter {
-               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches/?api-version=$([VSTeamVersions]::Tfvc)"
+               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches?api-version=$([VSTeamVersions]::Tfvc)"
             }
          }
       }
@@ -152,7 +152,7 @@ InModuleScope tfvc {
 
          It 'should call the REST endpoint with correct parameters' {
             Assert-MockCalled Invoke-RestMethod -Scope Context -Exactly -Times 1 -ParameterFilter {
-               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches/?api-version=$([VSTeamVersions]::Tfvc)&includeChildren=True"
+               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches?api-version=$([VSTeamVersions]::Tfvc)&includeChildren=True"
             }
          }
       }
@@ -164,7 +164,7 @@ InModuleScope tfvc {
 
          It 'should call the REST endpoint with correct parameters' {
             Assert-MockCalled Invoke-RestMethod -Scope Context -Exactly -Times 1 -ParameterFilter {
-               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches/?api-version=$([VSTeamVersions]::Tfvc)&includeDeleted=True"
+               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches?api-version=$([VSTeamVersions]::Tfvc)&includeDeleted=True"
             }
          }
       }
@@ -176,7 +176,7 @@ InModuleScope tfvc {
 
          It 'should call the REST endpoint with correct parameters' {
             Assert-MockCalled Invoke-RestMethod -Scope Context -Exactly -Times 1 -ParameterFilter {
-               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches/?api-version=$([VSTeamVersions]::Tfvc)&includeChildren=True&includeDeleted=True"
+               $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches?api-version=$([VSTeamVersions]::Tfvc)&includeChildren=True&includeDeleted=True"
             }
          }
       }
@@ -185,11 +185,11 @@ InModuleScope tfvc {
    Describe 'Get-VSTeamTfvcBranch' -Tag 'unit', 'multi' {
       # Mock the call to Get-Projects by the dynamic parameter for ProjectName
       Mock Invoke-RestMethod { return @() } -ParameterFilter {
-         $Uri -like "*_apis/projects*" 
+         $Uri -like "*_apis/projects*"
       }
-   
+
       $testCases = @(
-         @{ a = 'https://test.visualstudio.com'; t = 'vsts' }
+         @{ a = 'https://dev.azure.com/test'; t = 'vsts' }
          @{ a = 'http://localhost:8080/tfs/defaultcollection'; t = 'tfs' }
       )
 
@@ -200,22 +200,22 @@ InModuleScope tfvc {
 
          [VSTeamVersions]::Account = $a
 
-         Get-VSTeamTfvcBranch -Path $/MyProject/Master 
+         Get-VSTeamTfvcBranch -Path $/MyProject/Master
 
          Assert-MockCalled Invoke-RestMethod -Scope Context -Exactly -Times 1 -ParameterFilter {
             $Uri -eq "$([VSTeamVersions]::Account)/_apis/tfvc/branches/$/MyProject/Master?api-version=$([VSTeamVersions]::Tfvc)"
          }
       }
    }
-  
+
    Describe 'Get-VSTeamTfvcBranch VSTS' -Tag 'unit', 'tfvc', 'vsts' {
       # Mock the call to Get-Projects by the dynamic parameter for ProjectName
       Mock Invoke-RestMethod { return @() } -ParameterFilter {
-         $Uri -like "*_apis/projects*" 
-      }   
+         $Uri -like "*_apis/projects*"
+      }
 
-      [VSTeamVersions]::Account = 'https://test.visualstudio.com'
-      
+      [VSTeamVersions]::Account = 'https://dev.azure.com/test'
+
       Context 'Get-VSTeamTfvcBranch with one path' {
          Mock Invoke-RestMethod { return $singleResult } -Verifiable
 
@@ -307,12 +307,12 @@ InModuleScope tfvc {
    Describe 'Get-VSTeamTfvcBranch TFS' -Tag 'unit', 'tfvc', 'tfs' {
       # Mock the call to Get-Projects by the dynamic parameter for ProjectName
       Mock Invoke-RestMethod { return @() } -ParameterFilter {
-         $Uri -like "*_apis/projects*" 
+         $Uri -like "*_apis/projects*"
       }
 
       [VSTeamVersions]::Account = 'http://localhost:8080/tfs/defaultcollection'
       Mock _useWindowsAuthenticationOnPremise { return $true }
-      
+
       Context 'Get-VSTeamTfvcBranch with one path' {
          Mock Invoke-RestMethod { return $singleResult } -Verifiable
 

@@ -11,7 +11,7 @@ Adds a new Azure Resource Manager service endpoint.
 
 ## DESCRIPTION
 
-The cmdlet adds a new connection between TFS/VSTS and Azure using the Azure Resource Manager connection type.
+The cmdlet adds a new connection between TFS/AzD and Azure using the Azure Resource Manager connection type.
 
 ## EXAMPLES
 
@@ -28,8 +28,8 @@ you do not have to pass the ProjectName with each call.
 
 ```yaml
 Type: String
-Required: true
 Position: 0
+Required: True
 Accept pipeline input: true (ByPropertyName)
 ```
 
@@ -92,7 +92,7 @@ Accept pipeline input: true (ByPropertyName)
 ### -EndpointName
 
 The name displayed on the services page.
-In VSTS this is the Connection Name.
+In AzD this is the Connection Name.
 
 ```yaml
 Type: String
@@ -112,3 +112,4 @@ Position: 4
 [Get-VSTeamServiceEndpointType](Get-VSTeamServiceEndpointType.md)
 
 [Remove-VSTeamServiceEndpoint](Remove-VSTeamServiceEndpoint.md)
+

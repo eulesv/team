@@ -42,12 +42,12 @@ On Windows, allows you use to use Windows authentication against a local TFS ser
 
 ### -Account
 
-The Visual Studio Team Services (VSTS) account name to use.
+The Azure DevOps (AzD) account name to use.
 DO NOT enter the entire URL.
 
-Just the portion before visualstudio.com. For example in the
+Just the portion after dev.azure.com. For example in the
 following url mydemos is the account name.
-<https://mydemos.visualstudio.com>
+<https://dev.azure.com/mydemos>
 or
 The full Team Foundation Server (TFS) url including the collection.
 <http://localhost:8080/tfs/DefaultCollection>
@@ -76,7 +76,7 @@ Required: True
 
 ### -PersonalAccessToken
 
-The personal access token from VSTS/TFS to use to access this account.
+The personal access token from AzD/TFS to use to access this account.
 
 ```yaml
 Type: String
@@ -96,7 +96,7 @@ Parameter Sets: Windows
 
 ### -UseBearerToken
 
-Switches the authorzation from Basic to Bearer.  You still use the PAT for PersonalAccessToken parameters to store the token.
+Switches the authorization from Basic to Bearer.  You still use the PAT for PersonalAccessToken parameters to store the token.
 
 ```yaml
 Type: SwitchParameter
@@ -119,16 +119,18 @@ Specifies the version to use. The acceptable values for this parameter are:
 
 - TFS2017
 - TFS2018
+- AzD2019
 - VSTS
+- AzD
 
-If you are on VSTS it will default to VSTS otherwise it will default to TFS2017
+If you are on AzD it will default to Azd otherwise it will default to TFS2017
 
 ```yaml
 Type: String
 Parameter Sets: Secure, Plain, Windows
 Required: True
 Position: 3
-Default value: TFS2017 for TFS and VSTS for VSTS
+Default value: TFS2017 for TFS and AzD for AzD
 ```
 
 ## INPUTS
@@ -139,6 +141,7 @@ Default value: TFS2017 for TFS and VSTS for VSTS
 
 ## RELATED LINKS
 
-[Add-VSTeamAccount](Add-VSTeamAccount.md)
+[Set-VSTeamAccount](Set-VSTeamAccount.md)
 
 [Set-VSTeamDefaultProject](Set-VSTeamDefaultProject.md)
+

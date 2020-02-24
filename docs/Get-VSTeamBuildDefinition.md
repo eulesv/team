@@ -17,7 +17,7 @@ The project name is a Dynamic Parameter which may not be displayed in the syntax
 
 With just a project name, this function gets all of the build definitions for that team project.
 
-You can also specify a particular build defintion by ID.
+You can also specify a particular build definition by ID.
 
 ## EXAMPLES
 
@@ -29,7 +29,23 @@ PS C:\> Get-VSTeamBuildDefinition -ProjectName Demo | Format-List *
 
 This command gets a list of all build definitions in the demo project.
 
-The pipeline operator (|) passes the data to the Format-List cmdlet, which displays all available properties (*) of the build defintion objects.
+The pipeline operator (|) passes the data to the Format-List cmdlet, which displays all available properties (*) of the build definition objects.
+
+### -------------------------- EXAMPLE 2 --------------------------
+
+```PowerShell
+PS C:\> Get-VSTeamBuildDefinition -ProjectName Demo -id 2 -Json
+```
+
+This command returns the raw object returned from the server formatted as a JSON string.
+
+### -------------------------- EXAMPLE 3 --------------------------
+
+```PowerShell
+PS C:\> Get-VSTeamBuildDefinition -ProjectName Demo -id 2 -Raw
+```
+
+This command returns the raw object returned from the server.
 
 ## PARAMETERS
 
@@ -44,8 +60,8 @@ you do not have to pass the ProjectName with each call.
 
 ```yaml
 Type: String
-Required: true
 Position: 0
+Required: True
 Accept pipeline input: true (ByPropertyName)
 ```
 
@@ -79,7 +95,7 @@ Specifies one or more build definitions by ID.
 
 To specify multiple IDs, use commas to separate the IDs.
 
-To find the ID of a build defintion, type Get-VSTeamBuildDefinition.
+To find the ID of a build definition, type Get-VSTeamBuildDefinition.
 
 ```yaml
 Type: Int32[]
@@ -99,6 +115,26 @@ Parameter Sets: ByID
 Default value: -1
 ```
 
+### -JSON
+
+Converts the raw response into JSON and displays in the console. This is required when you need to use the object to send back.  Without this switch the JSON produced from the returned object will not match the expected shape of the JSON for sending back to server.
+
+```yaml
+Type: Switch
+Required: True
+Parameter Sets: ByIDJson
+```
+
+### -Raw
+
+Returns the raw response. This is required when you need to use the object to send back.  Without this switch the object produced from the returned object will not match the expected shape of the JSON for sending back to server.
+
+```yaml
+Type: Switch
+Required: True
+Parameter Sets: ByIDRaw
+```
+
 ## INPUTS
 
 ## OUTPUTS
@@ -107,14 +143,15 @@ Default value: -1
 
 ## NOTES
 
-You can pipe build defintion IDs to this function.
+You can pipe build definition IDs to this function.
 
 ## RELATED LINKS
 
-[Add-VSTeamAccount](Add-VSTeamAccount.md)
+[Set-VSTeamAccount](Set-VSTeamAccount.md)
 
 [Set-VSTeamDefaultProject](Set-VSTeamDefaultProject.md)
 
 [Add-VSTeamBuildDefinition](Add-VSTeamBuildDefinition.md)
 
 [Remove-VSTeamBuildDefinition](Remove-VSTeamBuildDefinition.md)
+

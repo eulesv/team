@@ -16,7 +16,7 @@ The project name is a Dynamic Parameter which may not be displayed in the syntax
 
 With just a project name, this function shows all of the build definitions for that team project.
 
-You can also specify a particular build defintion by ID.
+You can also specify a particular build definition by ID.
 
 ## EXAMPLES
 
@@ -83,7 +83,7 @@ You can pipe build definition IDs to this function.
 
 ## RELATED LINKS
 
-[Add-VSTeamAccount](Add-VSTeamAccount.md)
+[Set-VSTeamAccount](Set-VSTeamAccount.md)
 
 [Set-VSTeamDefaultProject](Set-VSTeamDefaultProject.md)
 

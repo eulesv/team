@@ -5,15 +5,15 @@
 
 ## SYNOPSIS
 
-Creates a new build defintion from a JSON file.
+Creates a new build definition from a JSON file.
 
 ## SYNTAX
 
 ## DESCRIPTION
 
-Reads a JSON file off disk and uses that file to create a new build defintion in the provided project.
+Reads a JSON file off disk and uses that file to create a new build definition in the provided project.
 
-You must call Add-VSTeamAccount before calling this function.
+You must call Set-VSTeamAccount before calling this function.
 
 ## EXAMPLES
 
@@ -23,7 +23,7 @@ You must call Add-VSTeamAccount before calling this function.
 PS C:\> Add-VSTeamBuildDefinition -ProjectName Demo -InFile build.json
 ```
 
-This command reads build.json and creates a new build defintion from it
+This command reads build.json and creates a new build definition from it
 on the demo team project.
 
 ## PARAMETERS
@@ -39,14 +39,14 @@ you do not have to pass the ProjectName with each call.
 
 ```yaml
 Type: String
-Required: true
 Position: 0
+Required: True
 Accept pipeline input: true (ByPropertyName)
 ```
 
 ### -InFile
 
-Path and file name to the JSON file that contains the defintion to be created. If the path is omitted, the default is the current location.
+Path and file name to the JSON file that contains the definition to be created. If the path is omitted, the default is the current location.
 
 ```yaml
 Type: String
@@ -72,3 +72,4 @@ You can use Set-VSTeamDefaultProject to set a default project so you do not have
 to pass the ProjectName with each call.
 
 ## RELATED LINKS
+

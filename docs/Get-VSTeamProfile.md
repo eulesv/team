@@ -51,6 +51,7 @@ Required: True
 
 ## RELATED LINKS
 
-[Add-VSTeamAccount](Add-VSTeamAccount.md)
+[Set-VSTeamAccount](Set-VSTeamAccount.md)
 
 [Add-VSTeamProfile](Add-VSTeamProfile.md)
+

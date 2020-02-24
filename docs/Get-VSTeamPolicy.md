@@ -5,13 +5,13 @@
 
 ## SYNOPSIS
 
-Get the code policies in the specified Visual Studio Team Services or Team Foundation Server project.
+Get the code policies in the specified Azure DevOps or Team Foundation Server project.
 
 ## SYNTAX
 
 ## DESCRIPTION
 
-Get the code policies in the specified Visual Studio Team Services or Team Foundation Server project.
+Get the code policies in the specified Azure DevOps or Team Foundation Server project.
 
 ## EXAMPLES
 
@@ -23,7 +23,7 @@ PS C:\> Get-VSTeamPolicy -ProjectName Demo
 
 This command returns all the policies for the Demo project in your TFS or Team Services account.
 
-### -------------------------- EXAMPLE 3 --------------------------
+### -------------------------- EXAMPLE 2 --------------------------
 
 ```PowerShell
 PS C:\> Get-VSTeamPolicy -ProjectName Demo -Id 1
@@ -44,8 +44,8 @@ you do not have to pass the ProjectName with each call.
 
 ```yaml
 Type: String
-Required: true
 Position: 0
+Required: True
 Accept pipeline input: true (ByPropertyName)
 ```
 
@@ -74,3 +74,4 @@ Accept pipeline input: true (ByPropertyName)
 [Remove-VSTeamPolicy](Remove-VSTeamPolicy.md)
 
 [Get-VSTeamPolicyType](Get-VSTeamPolicyType.md)
+

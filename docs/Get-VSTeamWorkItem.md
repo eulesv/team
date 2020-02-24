@@ -18,43 +18,16 @@ Returns one or more a work items from your project.
 ### -------------------------- EXAMPLE 1 --------------------------
 
 ```PowerShell
-PS C:\> Get-VSTeamWorkItem -ProjectName demo -Ids 47,48
+PS C:\> Get-VSTeamWorkItem -Id 47,48
 ```
 
-This command gets work items with IDs 47 and 48 by using the ID parameter.
+This command gets work items with IDs 47 and 48 by using the IDs parameter.
 
 ## PARAMETERS
 
-### -ProjectName
-
-Specifies the team project for which this function operates.
-
-You can tab complete from a list of available projects.
-
-You can use Set-VSTeamDefaultProject to set a default project so
-you do not have to pass the ProjectName with each call.
-
-```yaml
-Type: String
-Required: true
-Position: 0
-Accept pipeline input: true (ByPropertyName)
-```
-
 ### -Id
 
-The id of the work item.
-
-```yaml
-Type: Int32
-Parameter Sets: ByID
-Required: True
-Accept pipeline input: true (ByPropertyName, ByValue)
-```
-
-### -Ids
-
-The id of the work item.
+The id of one or more work items.
 
 ```yaml
 Type: Int32[]
@@ -74,7 +47,7 @@ The flag to control error policy in a bulk get work items request.  The acceptab
 Type: String
 Parameter Sets: List
 Required: True
-Default value: Fail
+Default value: omit
 ```
 
 ### -Fields
@@ -122,3 +95,4 @@ WorkItemType is a dynamic parameter and use the default project value to query t
 If you do not set the default project by called Set-VSTeamDefaultProject before calling Get-VSTeamWorkItem you will have to type in the names.
 
 ## RELATED LINKS
+

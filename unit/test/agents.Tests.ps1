@@ -1,7 +1,7 @@
 Set-StrictMode -Version Latest
 
-InModuleScope agents {
-   [VSTeamVersions]::Account = 'https://test.visualstudio.com'
+InModuleScope VSTeam {
+   [VSTeamVersions]::Account = 'https://dev.azure.com/test'
    [VSTeamVersions]::DistributedTask = '1.0-unitTest'
 
    $testAgent = [PSCustomObject]@{
@@ -21,9 +21,9 @@ InModuleScope agents {
    Describe 'agents' {
       # Mock the call to Get-Projects by the dynamic parameter for ProjectName
       Mock Invoke-RestMethod { return @() } -ParameterFilter {
-         $Uri -like "*_apis/projects*" 
+         $Uri -like "*_apis/projects*"
       }
-   
+
       Context 'Get-VSTeamAgents' {
          Mock Invoke-RestMethod { return [PSCustomObject]@{
                count = 1
@@ -32,10 +32,10 @@ InModuleScope agents {
          }
 
          it 'Should return all the pools' {
-            Get-VSTeamAgent -PoolId 1 
+            Get-VSTeamAgent -PoolId 1
 
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
-               $Uri -eq "https://test.visualstudio.com/_apis/distributedtask/pools/1/agents/?api-version=$([VSTeamVersions]::DistributedTask)"
+               $Uri -eq "https://dev.azure.com/test/_apis/distributedtask/pools/1/agents?api-version=$([VSTeamVersions]::DistributedTask)"
             }
          }
       }
@@ -48,10 +48,10 @@ InModuleScope agents {
          }
 
          it 'Should return all the pools' {
-            1 | Get-VSTeamAgent 
+            1 | Get-VSTeamAgent
 
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
-               $Uri -eq "https://test.visualstudio.com/_apis/distributedtask/pools/1/agents/?api-version=$([VSTeamVersions]::DistributedTask)"
+               $Uri -eq "https://dev.azure.com/test/_apis/distributedtask/pools/1/agents?api-version=$([VSTeamVersions]::DistributedTask)"
             }
          }
       }
@@ -63,7 +63,7 @@ InModuleScope agents {
             Get-VSTeamAgent -PoolId 1 -id 1
 
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
-               $Uri -eq "https://test.visualstudio.com/_apis/distributedtask/pools/1/agents/1?api-version=$([VSTeamVersions]::DistributedTask)"
+               $Uri -eq "https://dev.azure.com/test/_apis/distributedtask/pools/1/agents/1?api-version=$([VSTeamVersions]::DistributedTask)"
             }
          }
       }
@@ -76,7 +76,7 @@ InModuleScope agents {
 
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
                $Method -eq 'Delete' -and
-               $Uri -eq "https://test.visualstudio.com/_apis/distributedtask/pools/36/agents/950?api-version=$([VSTeamVersions]::DistributedTask)"
+               $Uri -eq "https://dev.azure.com/test/_apis/distributedtask/pools/36/agents/950?api-version=$([VSTeamVersions]::DistributedTask)"
             }
          }
       }
@@ -97,7 +97,7 @@ InModuleScope agents {
 
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
                $Method -eq 'Patch' -and
-               $Uri -eq "https://test.visualstudio.com/_apis/distributedtask/pools/36/agents/950?api-version=$([VSTeamVersions]::DistributedTask)"
+               $Uri -eq "https://dev.azure.com/test/_apis/distributedtask/pools/36/agents/950?api-version=$([VSTeamVersions]::DistributedTask)"
             }
          }
       }
@@ -118,7 +118,7 @@ InModuleScope agents {
 
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
                $Method -eq 'Patch' -and
-               $Uri -eq "https://test.visualstudio.com/_apis/distributedtask/pools/36/agents/950?api-version=$([VSTeamVersions]::DistributedTask)"
+               $Uri -eq "https://dev.azure.com/test/_apis/distributedtask/pools/36/agents/950?api-version=$([VSTeamVersions]::DistributedTask)"
             }
          }
       }

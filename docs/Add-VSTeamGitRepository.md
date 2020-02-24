@@ -5,13 +5,13 @@
 
 ## SYNOPSIS
 
-Adds a Git repository to your Visual Studio Team Services or Team Foundation Server account.
+Adds a Git repository to your Azure DevOps or Team Foundation Server account.
 
 ## SYNTAX
 
 ## DESCRIPTION
 
-Add-VSTeamGitRepository adds a Git repository to your Visual Studio Team Services or Team Foundation Server account.
+Add-VSTeamGitRepository adds a Git repository to your Azure DevOps or Team Foundation Server account.
 
 ## EXAMPLES
 
@@ -36,8 +36,8 @@ you do not have to pass the ProjectName with each call.
 
 ```yaml
 Type: String
-Required: true
 Position: 0
+Required: True
 Accept pipeline input: true (ByPropertyName)
 ```
 
@@ -58,3 +58,4 @@ Accept pipeline input: true (ByPropertyName)
 ## NOTES
 
 ## RELATED LINKS
+

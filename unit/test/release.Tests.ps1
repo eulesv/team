@@ -3,22 +3,17 @@ Set-StrictMode -Version Latest
 # Loading System.Web avoids issues finding System.Web.HttpUtility
 Add-Type -AssemblyName 'System.Web'
 
-InModuleScope releases {
-   [VSTeamVersions]::Account = 'https://test.visualstudio.com'
+InModuleScope VSTeam {
+   [VSTeamVersions]::Account = 'https://dev.azure.com/test'
    [VSTeamVersions]::Release = '1.0-unittest'
-
-   $results = [PSCustomObject]@{
-      value = [PSCustomObject]@{
-         environments = [PSCustomObject]@{}
-         _links       = [PSCustomObject]@{
-            self = [PSCustomObject]@{}
-            web  = [PSCustomObject]@{}
-         }
-      }
-   }
 
    $singleResult = [PSCustomObject]@{
       environments = [PSCustomObject]@{}
+      variables    = [PSCustomObject]@{
+         BrowserToUse = [PSCustomObject]@{
+            value = "phantomjs"
+         }
+      }
       _links       = [PSCustomObject]@{
          self = [PSCustomObject]@{}
          web  = [PSCustomObject]@{}
@@ -28,9 +23,9 @@ InModuleScope releases {
    Describe 'Releases' {
       # Mock the call to Get-Projects by the dynamic parameter for ProjectName
       Mock Invoke-RestMethod { return @() } -ParameterFilter {
-         $Uri -like "*_apis/projects*" 
+         $Uri -like "*_apis/projects*"
       }
-      
+
       . "$PSScriptRoot\mocks\mockProjectNameDynamicParamNoPSet.ps1"
 
       Context 'Show-VSTeamRelease by ID' {
@@ -40,7 +35,7 @@ InModuleScope releases {
             Show-VSTeamRelease -projectName project -Id 15
 
             Assert-MockCalled Show-Browser -Exactly -Scope It -Times 1 -ParameterFilter {
-               $url -eq 'https://test.visualstudio.com/project/_release?releaseId=15'
+               $url -eq 'https://dev.azure.com/test/project/_release?releaseId=15'
             }
          }
       }
@@ -59,7 +54,7 @@ InModuleScope releases {
 
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
                $Method -eq 'Delete' -and
-               $Uri -eq "https://test.vsrm.visualstudio.com/project/_apis/release/releases/15?api-version=$([VSTeamVersions]::Release)"
+               $Uri -eq "https://vsrm.dev.azure.com/test/project/_apis/release/releases/15?api-version=$([VSTeamVersions]::Release)"
             }
          }
       }
@@ -82,7 +77,7 @@ InModuleScope releases {
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
                $Method -eq 'Patch' -and
                $Body -eq '{ "id": 15, "status": "Abandoned" }' -and
-               $Uri -eq "https://test.vsrm.visualstudio.com/project/_apis/release/releases/15?api-version=$([VSTeamVersions]::Release)"
+               $Uri -eq "https://vsrm.dev.azure.com/test/project/_apis/release/releases/15?api-version=$([VSTeamVersions]::Release)"
             }
          }
       }
@@ -93,66 +88,6 @@ InModuleScope releases {
 
          It 'should set release status' {
             { Set-VSTeamReleaseStatus -ProjectName project -Id 15 -Status Abandoned -Force } | Should Throw
-         }
-      }
-
-      Context 'Get-VSTeamRelease by ID' {
-         Mock _useWindowsAuthenticationOnPremise { return $true }
-         Mock Invoke-RestMethod {
-            return $singleResult
-         }
-
-         It 'should return releases' {
-            Get-VSTeamRelease -ProjectName project -Id 15
-
-            Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
-               $Uri -eq "https://test.vsrm.visualstudio.com/project/_apis/release/releases/15?api-version=$([VSTeamVersions]::Release)"
-            }
-         }
-      }
-
-      Context 'Get-VSTeamRelease with no parameters' {
-         Mock _useWindowsAuthenticationOnPremise { return $true }
-         Mock Invoke-RestMethod {
-            return $results
-         }
-
-         It 'should return releases' {
-            Get-VSTeamRelease -projectName project
-
-            Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
-               $Uri -eq "https://test.vsrm.visualstudio.com/project/_apis/release/releases/?api-version=$([VSTeamVersions]::Release)"
-            }
-         }
-      }
-
-      Context 'Get-VSTeamRelease with expand environments' {
-         Mock _useWindowsAuthenticationOnPremise { return $true }
-         Mock Invoke-RestMethod {
-            return $results
-         }
-
-         It 'should return releases' {
-            Get-VSTeamRelease -projectName project -expand environments
-
-            Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
-               $Uri -eq "https://test.vsrm.visualstudio.com/project/_apis/release/releases/?api-version=$([VSTeamVersions]::Release)&`$expand=environments"
-            }
-         }
-      }
-
-      Context 'Get-VSTeamRelease with no parameters & no project' {
-         Mock _useWindowsAuthenticationOnPremise { return $true }
-         Mock Invoke-RestMethod {
-            return $results
-         }
-
-         It 'should return releases' {
-            Get-VSTeamRelease
-
-            Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
-               $Uri -eq "https://test.vsrm.visualstudio.com/_apis/release/releases/?api-version=$([VSTeamVersions]::Release)"
-            }
          }
       }
 
@@ -168,7 +103,7 @@ InModuleScope releases {
             Assert-MockCalled Invoke-RestMethod -Exactly -Scope It -Times 1 -ParameterFilter {
                $Method -eq 'Patch' -and
                $Body -eq $expectedBody -and
-               $Uri -eq "https://test.vsrm.visualstudio.com/project/_apis/release/releases/1/environments/15?api-version=$([VSTeamVersions]::Release)"
+               $Uri -eq "https://vsrm.dev.azure.com/test/project/_apis/release/releases/1/environments/15?api-version=$([VSTeamVersions]::Release)"
             }
          }
       }
@@ -197,7 +132,7 @@ InModuleScope releases {
                $Body -like '*"alias": "drop"*' -and
                $Body -like '*"id": "2"*' -and
                $Body -like '*"sourceBranch": ""*' -and
-               $Uri -eq "https://test.vsrm.visualstudio.com/project/_apis/release/releases/?api-version=$([VSTeamVersions]::Release)"
+               $Uri -eq "https://vsrm.dev.azure.com/test/project/_apis/release/releases?api-version=$([VSTeamVersions]::Release)"
             }
          }
       }
@@ -279,7 +214,7 @@ InModuleScope releases {
                $Body -like '*"alias": "drop"*' -and
                $Body -like '*"id": "1"*' -and
                $Body -like '*"sourceBranch": ""*' -and
-               $Uri -eq "https://test.vsrm.visualstudio.com/project/_apis/release/releases/?api-version=$([VSTeamVersions]::Release)"
+               $Uri -eq "https://vsrm.dev.azure.com/test/project/_apis/release/releases?api-version=$([VSTeamVersions]::Release)"
             }
          }
       }

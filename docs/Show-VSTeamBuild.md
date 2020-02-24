@@ -49,10 +49,11 @@ You can pipe the build ID to this function.
 
 ## RELATED LINKS
 
-[Add-VSTeamAccount](Add-VSTeamAccount.md)
+[Set-VSTeamAccount](Set-VSTeamAccount.md)
 
 [Set-VSTeamDefaultProject](Set-VSTeamDefaultProject.md)
 
 [Add-VSTeamBuild](Add-VSTeamBuild.md)
 
 [Remove-VSTeamBuild](Remove-VSTeamBuild.md)
+

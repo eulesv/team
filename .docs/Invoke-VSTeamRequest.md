@@ -10,14 +10,14 @@
 
 ## DESCRIPTION
 
-Invoke-VSTeamRequest allows you to call a TFS/VSTS REST API much easier than using Invoke-WebRequest directly. The shape of the URI and authentication is all handled for you.
+Invoke-VSTeamRequest allows you to call a TFS/AzD REST API much easier than using Invoke-WebRequest directly. The shape of the URI and authentication is all handled for you.
 
 ## EXAMPLES
 
 ### -------------------------- EXAMPLE 1 --------------------------
 
 ```PowerShell
-PS C:\> Invoke-VSTeamRequest -resource projecthistory -version '4.1-preview' -Verbose
+PS C:\> Invoke-VSTeamRequest -resource projectHistory -version '4.1-preview' -Verbose
 ```
 
 This command will return the project history.
@@ -130,7 +130,7 @@ Type: String
 
 ### -SubDomain
 
-The SubDomain between your account and visualstudio.com. For example, to target Release Management you must use the SubDomain vsrm.
+The SubDomain before .dev.azure.com. For example, to target Release Management you must use the SubDomain vsrm.
 
 ```yaml
 Type: String

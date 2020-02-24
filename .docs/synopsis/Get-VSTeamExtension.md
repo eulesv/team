@@ -1,0 +1,1 @@
+Get the installed extensions in the specified Azure DevOps or Team Foundation Server project.

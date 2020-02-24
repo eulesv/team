@@ -10,7 +10,7 @@
 
 ## DESCRIPTION
 
-Get-VSTeamGitRepository gets all the repositories in your Visual Studio Team Services or Team Foundation Server account, or a specific project.
+Get-VSTeamGitRepository gets all the repositories in your Azure DevOps or Team Foundation Server account, or a specific project.
 
 ## EXAMPLES
 
@@ -33,7 +33,7 @@ This command returns all the Git repositories for the Demo team project.
 ### -------------------------- EXAMPLE 3 --------------------------
 
 ```PowerShell
-PS C:\> git clone (Get-VSTeamGitRepository | select -ExpandProperty remoteurl)
+PS C:\> git clone (Get-VSTeamGitRepository | select -ExpandProperty remoteUrl)
 ```
 
 This command gets the remote URL and passes it to git clone command.

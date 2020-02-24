@@ -14,7 +14,7 @@ The Get-VSTeamApproval function gets the approvals for all releases for a team p
 
 With just a project name, this function gets all of the pending approvals for that team project.
 
-When using with VSTS "IncludeMyGroupApprovals" will be added to the request when Assigned To Filter is not empty.
+When using with AzD "IncludeMyGroupApprovals" will be added to the request when Assigned To Filter is not empty.
 
 When using with TFS "IncludeMyGroupApprovals" will be added to the request when Assigned To Filter, Release Id Filter are not empty and Status Filter equals Pending.
 
@@ -97,11 +97,11 @@ You can tab complete from a list of available projects.
 
 You can use Set-VSTeamDefaultProject to set a default project so you do not have to pass the ProjectName with each call.
 
-You can pipe build defintion IDs to this function.
+You can pipe build definition IDs to this function.
 
 ## RELATED LINKS
 
-[Add-VSTeamAccount](Add-VSTeamAccount.md)
+[Set-VSTeamAccount](Set-VSTeamAccount.md)
 
 [Set-VSTeamDefaultProject](Set-VSTeamDefaultProject.md)
 
